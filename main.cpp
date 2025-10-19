@@ -3,8 +3,8 @@
 using namespace std;
 
 class CuckooHash{
-    static const int TABLA_SIZE = 10;
-    static const int MAX_CICLOS = 10;
+    static const int TABLA_SIZE = 5;
+    static const int MAX_CICLOS = 3;
 
     vector<string> tabla1;
     vector<string> tabla2;
@@ -98,6 +98,11 @@ class CuckooHash{
 int main(){
     CuckooHash tablaHash;
     tablaHash.insertar("Jorge");
+    tablaHash.insertar("manu");
+    tablaHash.insertar("perez");
+    tablaHash.insertar("sara");
+    tablaHash.insertar("saul");
+    tablaHash.insertar("ross");
     tablaHash.mostrar();
 
     return 0;
