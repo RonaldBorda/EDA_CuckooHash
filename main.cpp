@@ -4,28 +4,27 @@ using namespace std;
 
 class CuckooHash{
     static const int TABLA_SIZE = 5;
-    static const int MAX_CICLOS = 3;
+    static const int MAX_CICLOS = 10;
 
     vector<string> tabla1;
     vector<string> tabla2;
 
+    vector<string> temporal;
     int hash1(const string& clave) {
         int hash = 0; 
         for (char c : clave) {
             // Rotación de 3 bits
             hash = (hash << 3) | (hash >> 29);
             hash = hash + c;
-            hash = hash % TABLA_SIZE;
         }
-        return hash;
+        return hash % TABLA_SIZE;
     }
     int hash2(const string& clave) {
         int hash = 0;
         for (char c : clave) {
             hash = (hash * 7) + c;  // Multiplica por primo y suma carácter
-            hash = hash % TABLA_SIZE;
         }
-        return hash;
+        return hash % TABLA_SIZE;
     }
 
     public:
@@ -48,7 +47,6 @@ class CuckooHash{
                 if(tablaActual == 0){
                     //Insertar en tabla1
                     int pos = hash1(claveActual);
-                    cout<<"Pos1: "<<pos<<"\n";
                     if(tabla1[pos] == ""){
                         tabla1[pos]=claveActual;
                         //cout<<"Clave -> "<<clave<<" insertado en la tabla 1["<<pos<<"]"<<endl;
@@ -59,7 +57,6 @@ class CuckooHash{
                     }
                 }else{
                     int pos = hash2(claveActual);
-                    cout<<"Pos2: "<<pos<<"\n";
                     if(tabla2[pos] == ""){
                         tabla2[pos] = claveActual;
                         //cout<<"Clave -> "<<clave<<" insertado en la tabla 2["<<pos<<"]"<<endl;
@@ -71,6 +68,7 @@ class CuckooHash{
                 }
                 ciclos++;
             }
+            temporal.push_back(claveActual);
             cout<<"Número de ciclo excedido"<<clave<<"\n";
 
             return false;
@@ -86,6 +84,14 @@ class CuckooHash{
             for (int i = 0; i < TABLA_SIZE; i++) {
                 cout << "[" << tabla2[i] << "] ";
             }
+            cout << endl;
+
+            cout << "Temporal: ";
+            if(!temporal.empty()) {
+                for(const string& elem : temporal) {
+                    cout << "[" << elem << "] ";
+                }
+            }
             cout << endl << endl;
     }
 
@@ -97,13 +103,18 @@ class CuckooHash{
 };
 int main(){
     CuckooHash tablaHash;
-    tablaHash.insertar("Jorge");
-    tablaHash.insertar("manu");
-    tablaHash.insertar("perez");
-    tablaHash.insertar("sara");
-    tablaHash.insertar("saul");
-    tablaHash.insertar("ross");
-    tablaHash.mostrar();
+    string elementos[] = {"Jorge", "manu", "perez", "sara", "saul", 
+                         "ross", "ross2", "ross3", "ross4", "ross5"};
+    
+    for(int i = 0; i <= 10; i++){
+        bool exito = tablaHash.insertar(elementos[i]);
+        tablaHash.mostrar();
+        if(!exito){
+            cout << "Error en la inserción " << elementos[i] << endl;
+        }
+    }
+
+   
 
     return 0;
 }
