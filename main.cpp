@@ -13,7 +13,7 @@ class CuckooHash{
     int hash1(const string& clave, int tamano) {
         int hash = 0; 
         for (char c : clave) {
-            // Rotación de 3 bits
+            // Multiplicación por 8
             hash *= 8;
             hash = hash + c;
         }
@@ -68,8 +68,8 @@ class CuckooHash{
 
     public:
         CuckooHash(){
-            tabla1.resize(5, "");
-            tabla2.resize(5, "");
+            tabla1.resize(10, "");
+            tabla2.resize(10, "");
         }
 
         bool insertar(string clave){
