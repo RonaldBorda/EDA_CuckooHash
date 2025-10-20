@@ -14,7 +14,7 @@ class CuckooHash{
         int hash = 0; 
         for (char c : clave) {
             // Rotación de 3 bits
-            hash = (hash << 3) | (hash >> 29);
+            hash *= 8;
             hash = hash + c;
         }
         return hash % tamano;
