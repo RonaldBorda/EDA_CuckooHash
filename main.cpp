@@ -3,7 +3,7 @@
 using namespace std;
 
 class CuckooHash{
-    static const int MAX_CICLOS = 10;
+    int MAX_CICLOS = 10;
 
     vector<string> tabla1;
     vector<string> tabla2;
