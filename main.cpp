@@ -54,11 +54,9 @@ class CuckooHash{
         for (const string& elem : elementos) {
             reHashing(elem);
         }
-
     }
 
     void reHashing(const string& clave) {
-        
         insertar(clave);
     }
 
@@ -74,7 +72,6 @@ class CuckooHash{
         }
 
         bool insertar(string clave){
-
             string claveActual = clave;
             int tablaActual = 0; 
             int ciclos = 0;
@@ -107,10 +104,9 @@ class CuckooHash{
             temporal.push_back(claveActual);
             resizeTabla();
             almacenarElementos();
-
-
             return false;
         }
+
         void mostrar() {
             cout << "Table 1: ";
             for (int i = 0; i < tabla1.size(); i++) {
@@ -138,7 +134,6 @@ class CuckooHash{
             tabla2.resize(nuevoTamano);
             cout<<"Tamaño aumentado:\ntabla 1: "<<tabla1.size()<<" campos "<<"\ntabla 2: " <<tabla2.size()<<" campos \n";
         }
-
 
         bool buscar(string& clave){
             int pos1 = hash1(clave);
