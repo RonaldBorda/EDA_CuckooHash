@@ -9,6 +9,7 @@ class CuckooHash{
     vector<string> tabla2;
 
     vector<string> temporal;
+    vector<string> temporal2;
     int hash1(const string& clave, int tamano) {
         int hash = 0; 
         for (char c : clave) {
