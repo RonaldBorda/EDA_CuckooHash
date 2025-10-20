@@ -3,7 +3,6 @@
 using namespace std;
 
 class CuckooHash{
-    static const int TABLA_SIZE = 5;
     static const int MAX_CICLOS = 10;
 
     vector<string> tabla1;
@@ -17,20 +16,20 @@ class CuckooHash{
             hash = (hash << 3) | (hash >> 29);
             hash = hash + c;
         }
-        return hash % TABLA_SIZE;
+        return hash % tabla1.size();
     }
     int hash2(const string& clave) {
         int hash = 0;
         for (char c : clave) {
             hash = (hash * 7) + c;  // Multiplica por primo y suma carácter
         }
-        return hash % TABLA_SIZE;
+        return hash % tabla2.size();
     }
 
     public:
         CuckooHash(){
-            tabla1.resize(TABLA_SIZE, "");
-            tabla2.resize(TABLA_SIZE, "");
+            tabla1.resize(5, "");
+            tabla2.resize(5, "");
         }
 
         bool insertar(string clave){
@@ -40,12 +39,11 @@ class CuckooHash{
             }
 
             string claveActual = clave;
-            int tablaActual = 0; // 0 tabla1, 1 tabla2
+            int tablaActual = 0; 
             int ciclos = 0;
 
             while(ciclos < MAX_CICLOS){
                 if(tablaActual == 0){
-                    //Insertar en tabla1
                     int pos = hash1(claveActual);
                     if(tabla1[pos] == ""){
                         tabla1[pos]=claveActual;
@@ -68,32 +66,40 @@ class CuckooHash{
                 }
                 ciclos++;
             }
+            cout<<"Número de ciclo excedido \n";
             temporal.push_back(claveActual);
-            cout<<"Número de ciclo excedido"<<clave<<"\n";
-
+            resizeTabla();
+            
             return false;
         }
         void mostrar() {
             cout << "Table 1: ";
-            for (int i = 0; i < TABLA_SIZE; i++) {
+            for (int i = 0; i < tabla1.size(); i++) {
                 cout << "[" << tabla1[i] << "] ";
             }
             cout << endl;
             
             cout << "Table 2: ";
-            for (int i = 0; i < TABLA_SIZE; i++) {
+            for (int i = 0; i < tabla2.size(); i++) {
                 cout << "[" << tabla2[i] << "] ";
             }
             cout << endl;
 
             cout << "Temporal: ";
             if(!temporal.empty()) {
-                for(const string& elem : temporal) {
-                    cout << "[" << elem << "] ";
+                for(int i = 0; i < temporal.size(); i++) {
+                    cout << "[" << temporal[i] << "] ";
                 }
             }
             cout << endl << endl;
-    }
+        }
+        void resizeTabla(){
+            int nuevoTamano = tabla1.size() + 5;
+            tabla1.resize(nuevoTamano);
+            tabla2.resize(nuevoTamano);
+            cout<<"Tamaño aumentado:\ntabla 1: "<<tabla1.size()<<" campos "<<"\ntabla 2: " <<tabla2.size()<<" campos \n";
+        }
+
 
         bool buscar(string& clave){
             int pos1 = hash1(clave);
