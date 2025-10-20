@@ -147,11 +147,8 @@ int main(){
                          "mary", "cary", "roxan", "hugo", "maylo"};
     
     for(int i = 0; i <= 10; i++){
-        bool exito = tablaHash.insertar(elementos[i]);
+        tablaHash.insertar(elementos[i]);
         tablaHash.mostrar();
-        if(!exito){
-            cout << "Error en la inserción " << elementos[i] << endl;
-        }
     }
     return 0;
 }
