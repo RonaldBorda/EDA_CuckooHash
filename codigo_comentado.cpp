@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector> //se usarán vectores para representar las tablas hash dinámicas
+//las siguientes librerias son para generar nombres aleatorios en el main
 #include <cstdlib>
 #include <ctime>
 using namespace std;
@@ -94,7 +95,9 @@ class CuckooHash {
         fill(tabla2.begin(), tabla2.end(), "");
     }
 
-    void actualizarMaxCiclos() { //Función añadida para actualizar el número de ciclos para las nuevas tablas agrandadas
+    //duplica el limite de ciclos despues de un rehash
+    //ya que una tabla mas grande necesita mas intentos de expulsión antes de considerar otro rehash
+    void actualizarMaxCiclos() { //Función para actualizar el número de ciclos para las nuevas tablas agrandadas
         MAX_CICLOS *= 2;
         cout << "MAX_CICLOS actualizado a: " << MAX_CICLOS << endl;
     }
@@ -186,21 +189,22 @@ public:
     //Se necesita cuando ocurre un ciclo, para hacer más espacio y resolver el ciclo en el siguiente rehash
     void resizeTabla(){
         int nuevoTamano = tabla1.size() * 2;
-        tabla1.resize(nuevoTamano,"");
+        tabla1.resize(nuevoTamano,""); //Redimensiona y rellena con ""
         tabla2.resize(nuevoTamano,"");
         cout<<"Tamanio duplicado:\ntabla 1: "<<tabla1.size()<<" campos "<<"\ntabla 2: " <<tabla2.size()<<" campos \n";
 
-        actualizarMaxCiclos();
+        actualizarMaxCiclos();// Actualiza el límite de intentos para el nuevo tamaño
     }
-
+    
+    // Busca una clave en la tabla, la búsqueda es siempre O(1).
     bool buscar(string& clave){
         int pos1 = hash1(clave);
         int pos2 = hash2(clave);
-        return (tabla1[pos1] == clave) || (tabla2[pos2] == clave) ;
+        return (tabla1[pos1] == clave) || (tabla2[pos2] == clave) ; //retorna true si la encuentra en alguna tabla
     }
 };
 
-
+// Genera un nombre de 3 sílabas combinando partes aleatorias
 string generarNombreAleatorio() {
 
     string prefijos[] = {"Al", "An", "Be", "Ca", "Da", "El", "Fe", "Go", "Ha", "Ja",
@@ -212,6 +216,7 @@ string generarNombreAleatorio() {
     string sufijos[] = {"to", "no", "ta", "na", "ro", "la", "do", "sa", "go", "zo",
                        "ry", "ly", "ny", "th", "el", "io", "os", "es", "as", "us"};
     
+    // rand() % 20 selecciona un índice aleatorio entre 0 y 19.
     string nombre = prefijos[rand()%20]+ medios[rand()%20]+sufijos[rand()%20];
     
     
@@ -219,6 +224,7 @@ string generarNombreAleatorio() {
 }
 
 int main(){
+    // Inicializa la semilla para la generación de números aleatorios
     srand(time(nullptr));
     CuckooHash tablaHash;
     vector<string> nombresGenerados;
