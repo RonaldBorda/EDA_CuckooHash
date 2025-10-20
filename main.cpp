@@ -74,11 +74,6 @@ class CuckooHash{
         }
 
         bool insertar(string clave){
-            /**
-            if(buscar(clave)){
-                cout<<"Clave: "<<clave<<" ya existe"<<endl;
-                return true;
-            }**/
 
             string claveActual = clave;
             int tablaActual = 0; 
@@ -163,8 +158,5 @@ int main(){
             cout << "Error en la inserción " << elementos[i] << endl;
         }
     }
-
-   
-
     return 0;
 }
